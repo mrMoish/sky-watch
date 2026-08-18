@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import cast
+from typing import cast, Tuple
 
 import requests
 
@@ -33,3 +33,11 @@ class OpenStreetMap(BaseApi):
             },
             headers={"User-Agent": "sky-watch/1.0"},
         )
+
+    def get_country_bbox(self, country: str) -> Tuple[float, float, float, float]:
+        """Вернуть boundingbox страны в формате (south, north, west, east)."""
+        data = self.search(country)
+        if not data:
+            raise ValueError(f"Страна '{country}' не найдена")
+        south, north, west, east = map(float, data[0]["boundingbox"])
+        return south, north, west, east
