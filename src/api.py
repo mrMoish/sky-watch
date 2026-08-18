@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import Tuple, Any
+from typing import Any, Tuple, cast
 
 import requests
 
@@ -11,15 +11,15 @@ class BaseApi(ABC):
     def base_url(self) -> str: ...
 
     @abstractmethod
-    def get_data(self, url: str, params: dict[str, str]) -> list[dict[str, str]]: ...
+    def get_data(self, url: str, params: dict[str, Any]) -> list[dict[str, str]]: ...
 
     @staticmethod
-    def get(url: str, params: dict[str, Any], headers: dict[str, str] | None = None
-        ) -> Any:
+    def get(url: str, params: dict[str, Any], headers: dict[str, str] | None = None) -> Any:
         response = requests.get(url, params=params, headers=headers)
         response.raise_for_status()
         data = response.json()
         return data
+
 
 class OpenStreetMap(BaseApi):
 
@@ -27,9 +27,8 @@ class OpenStreetMap(BaseApi):
     def base_url(self) -> str:
         return "https://nominatim.openstreetmap.org/"
 
-
     def get_data(self, url: str, params: dict[str, str]) -> list[dict[str, str]]:
-        return self.get(url, params=params, headers={"User-Agent": "sky-watch/1.0"})
+        return cast(list[dict[str, str]], self.get(url, params=params, headers={"User-Agent": "sky-watch/1.0"}), )
 
     def search(self, country: str) -> list[dict[str, str]]:
         return self.get_data(
@@ -37,7 +36,7 @@ class OpenStreetMap(BaseApi):
             params={
                 "country": country,
                 "format": "jsonv2",
-            }
+            },
         )
 
     def get_country_bbox(self, country: str) -> Tuple[float, float, float, float]:
@@ -57,9 +56,9 @@ class OpenSky(BaseApi):
 
     def get_data(self, url: str, params: dict[str, float]) -> list[dict[str, str]]:
         response = self.get(url, params=params)
-        return response['states']
+        return cast(list[dict[str, str]], response["states"])
 
-    def get_bbox(self, bbox: Tuple[float, float, float, float]) -> list:
+    def get_bbox(self, bbox: Tuple[float, float, float, float]) -> list[dict[str, str]]:
         south, north, west, east = bbox
         params = {"lamin": south, "lamax": north, "lomin": west, "lomax": east}
         return self.get_data(self.base_url, params)
