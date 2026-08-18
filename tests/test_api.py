@@ -1,6 +1,6 @@
 import pytest
 
-from src.openstreetmap_api import OpenStreetMap
+from src.api import OpenStreetMap, OpenSky
 
 
 def test_openstreetmap_search() -> None:
@@ -20,3 +20,11 @@ def test_openstreetmap_get_boundingbox_with_error() -> None:
     openstreetmap = OpenStreetMap()
     with pytest.raises(ValueError):
         openstreetmap.get_country_bbox("Moscow")
+
+def test_opensky_api():
+    openstreetmap = OpenStreetMap()
+    bbox = openstreetmap.get_country_bbox("Argentina")
+    opensky = OpenSky()
+    result = opensky.get_bbox(bbox)
+    assert isinstance(result, list)
+    assert len(result) > 0
