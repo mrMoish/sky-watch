@@ -1,6 +1,7 @@
-import requests
 from abc import ABC, abstractmethod
 from typing import cast
+
+import requests
 
 
 class BaseApi(ABC):
