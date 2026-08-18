@@ -1,0 +1,15 @@
+[project]
+name = "sky-watch"
+version = "0.1.0"
+description = "Отслеживание самолётов в воздушном пространстве выбранных стран через nominatim и opensky-network"
+authors = [
+    {name = "mrMoish",email = "@"}
+]
+requires-python = ">=3.13"
+dependencies = [
+]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
