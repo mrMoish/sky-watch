@@ -1,6 +1,6 @@
 from src.openstreetmap_api import OpenStreetMap
 
-def test_openstreetmap_search():
+def test_openstreetmap_search() -> None:
     openstreetmap = OpenStreetMap()
     result = openstreetmap.search('Russia')
     assert isinstance(result, list)
