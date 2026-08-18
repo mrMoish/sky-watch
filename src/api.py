@@ -28,7 +28,10 @@ class OpenStreetMap(BaseApi):
         return "https://nominatim.openstreetmap.org/"
 
     def get_data(self, url: str, params: dict[str, str]) -> list[dict[str, str]]:
-        return cast(list[dict[str, str]], self.get(url, params=params, headers={"User-Agent": "sky-watch/1.0"}), )
+        return cast(
+            list[dict[str, str]],
+            self.get(url, params=params, headers={"User-Agent": "sky-watch/1.0"}),
+        )
 
     def search(self, country: str) -> list[dict[str, str]]:
         return self.get_data(
@@ -62,3 +65,16 @@ class OpenSky(BaseApi):
         south, north, west, east = bbox
         params = {"lamin": south, "lamax": north, "lomin": west, "lomax": east}
         return self.get_data(self.base_url, params)
+
+
+class AeroplanesAPI:
+    """Класс-фасад, объединяющий NominatimAPI и OpenSkyAPI."""
+
+    def __init__(self) -> None:
+        self._nominatim = OpenStreetMap()
+        self._opensky = OpenSky()
+
+    def get_aeroplanes(self, country: str) -> list[dict[str, str]]:
+        """Вернуть список 'сырых' записей о самолётах в воздушном пространстве страны."""
+        bbox = self._nominatim.get_country_bbox(country)
+        return self._opensky.get_bbox(bbox)

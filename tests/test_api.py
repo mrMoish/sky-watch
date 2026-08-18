@@ -1,6 +1,6 @@
 import pytest
 
-from src.api import OpenSky, OpenStreetMap
+from src.api import AeroplanesAPI, OpenSky, OpenStreetMap
 
 
 def test_openstreetmap_search() -> None:
@@ -31,3 +31,8 @@ def test_opensky_api() -> None:
     result = opensky.get_bbox(bbox)
     assert isinstance(result, list)
     assert len(result) > 0
+
+
+def test_aeroplanes_api() -> None:
+    aeroplanes_api = AeroplanesAPI()
+    print(aeroplanes_api.get_aeroplanes("Turkey"))
