@@ -1,5 +1,6 @@
 from src.api import AeroplanesAPI
 
+
 def user_interaction() -> None:
     """Взаимодействовать с пользователем через консоль."""
 

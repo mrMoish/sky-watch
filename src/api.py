@@ -61,10 +61,10 @@ class OpenSky(BaseApi):
         response = self.get(url, params=params)
         return cast(list[dict[str, str]], response["states"])
 
-    def get_bbox(self, bbox: Tuple[float, float, float, float]) -> list[dict[str, str]]:
+    def get_bbox(self, bbox: Tuple[float, float, float, float]) -> list[list[Any]]:
         south, north, west, east = bbox
         params = {"lamin": south, "lamax": north, "lomin": west, "lomax": east}
-        return self.get_data(self.base_url, params)
+        return cast(list[list[Any]], self.get_data(self.base_url, params))
 
 
 class AeroplanesAPI:
@@ -74,7 +74,7 @@ class AeroplanesAPI:
         self._nominatim = OpenStreetMap()
         self._opensky = OpenSky()
 
-    def get_aeroplanes(self, country: str) -> list[dict[str, str]]:
+    def get_aeroplanes(self, country: str) -> list[list[Any]]:
         """Вернуть список 'сырых' записей о самолётах в воздушном пространстве страны."""
         bbox = self._nominatim.get_country_bbox(country)
         return self._opensky.get_bbox(bbox)
