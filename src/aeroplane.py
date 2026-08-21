@@ -89,3 +89,21 @@ class Aeroplane:
             )
             result.append(aeroplane)
         return result
+    def to_dict(self) -> dict:
+        """Преобразовать объект в словарь для сохранения (например, в JSON)."""
+        return {
+            "callsign": self.callsign,
+            "origin_country": self.origin_country,
+            "velocity": self.velocity,
+            "altitude": self.altitude,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> "Aeroplane":
+        """Создать объект Aeroplane из словаря (например, прочитанного из JSON)."""
+        return cls(
+            callsign=data.get("callsign", "N/A"),
+            origin_country=data.get("origin_country", "Unknown"),
+            velocity=data.get("velocity", 0.0),
+            altitude=data.get("altitude", 0.0)
+        )
