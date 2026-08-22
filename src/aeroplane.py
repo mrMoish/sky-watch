@@ -107,3 +107,6 @@ class Aeroplane:
             velocity=data.get("velocity", 0.0),
             altitude=data.get("altitude", 0.0)
         )
+
+    def __str__(self):
+        return f"{self.callsign} {self.origin_country} velocity:{self.velocity} altitude:{self.altitude}"
