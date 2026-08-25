@@ -20,13 +20,17 @@ def user_interaction() -> None:
     while True:
         str_top_n_raw = input("Введите количество самолётов для вывода в топ N: ").strip()
         try:
+
             top_n_raw = int(str_top_n_raw)
             break
         except ValueError:
             print("🚨 Укажите число")
     aeroplanes.sort(key=attrgetter("altitude"), reverse=True)
     for i in range(top_n_raw):
-        print(aeroplanes[i])
+        try:
+            print(aeroplanes[i])
+        except IndexError:
+            break
 
     print()
 
